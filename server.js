@@ -18,6 +18,10 @@ let userModel = require('./Users');
 
 let projectModel = require('./Projects');
 
+let taskModel = require('./Tasks');
+
+let parentTaskModel = require('./ParentTasks');
+
 // Setup server port
 let port = process.env.PORT || 8080;
 
@@ -137,6 +141,40 @@ app.delete('/projects/:id', (req, res, next) => {
     });
 });
 
+//Task https requests
+
+app.get('/tasks', (req, res, next) => {
+    taskModel.find({}, { 'id':1, 'projectId':1, 'taskName':1, 'priority':1, 'priority':1, 'parentTaskId':1, 'startDate':1, 'endDate':1 }, (error, users) => {
+        if (error) return next(error);
+        res.send(users);
+    })
+});
+
+app.post('/tasks', (req, res, next) => {
+    let newTask = new taskModel(req.body);
+    newTask.save((error, results) => {
+        if (error) return next(error);
+        res.send(results);
+    })
+});
+
+//Parent Task http request.
+app.get('/parenttasks', (req, res, next) => {
+    console.log('inside parenttasks');
+    parentTaskModel.find({}, { 'id':1, 'parentTaskName':1}, (error, parentTask) => {
+        if (error) return next(error);
+        res.send(parentTask);
+    })
+});
+
+app.post('/parenttasks', (req, res, next) => {
+    console.log('inside parenttasks');
+    let newParentTask = new parentTaskModel(req.body);
+    newParentTask.save((error, results) => {
+        if (error) return next(error);
+        res.send(results);
+    })
+});
 
 // listen for requests
 app.listen(port, () => {
@@ -154,3 +192,24 @@ app.listen(port, () => {
     }
 });
  */
+
+/* let storeTask = new taskModel({ projectId: mongoose.mongo.ObjectId('5d783385a581cc146099e86b'), taskName:'Fourth Task', priority: 2, parentTaskId: mongoose.mongo.ObjectID('5d7f96dae70a8a00002e91bf'), startDate: '2019-09-10T04:00:00.000+00:00', endDate: '2019-11-10T05:00:00.000+00:00'});
+storeTask.save((err, results) => {
+   if (err) {
+       console.error(err)
+       process.exit(1)
+   } else {
+       console.log('Saved: ', results)
+       process.exit(0)
+   }
+}); */
+/* let storeParentTask = new parentTaskModel({ parentTaskName:'First Parent Task'});
+storeParentTask.save((err, results) => {
+   if (err) {
+       console.error(err)
+       process.exit(1)
+   } else {
+       console.log('Saved: ', results)
+       process.exit(0)
+   }
+});  */

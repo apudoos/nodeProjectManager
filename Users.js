@@ -14,7 +14,7 @@ let userSchema = new mongoose.Schema({
     empId: {
         type: Number,
         required: true
-    }/* ,
+    },
     projectId: [{
         type: mongoose.Schema.Types.ObjectId, 
         ref: 'Project',
@@ -24,7 +24,7 @@ let userSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId, 
         ref: 'Task',
         required: false
-    }] */
+    }]
 });
 
 module.exports = mongoose.model('Users', userSchema);
